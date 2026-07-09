@@ -1,0 +1,39 @@
+:root {
+  --color-emerald: #5c402d;
+  --color-emerald-deep: #2d1e15;
+  --color-emerald-soft: #84624b;
+  --color-gold: #c5a059;
+  --color-gold-soft: #eddca4;
+  --color-ivory: #fdfbf7;
+  --color-cream: #f7f2e8;
+  --color-beige: #ede5d9;
+  --color-brown: #795436;
+  --color-text: #2e2118;
+  --color-muted: #665548;
+  --color-white: #ffffff;
+  --color-border: rgba(197, 160, 89, 0.28);
+  --shadow-soft: 0 24px 80px rgba(92, 64, 45, 0.08);
+  --shadow-card: 0 16px 48px rgba(92, 64, 45, 0.06);
+  --font-heading: "Playfair Display", Georgia, serif;
+  --font-body: "Poppins", Arial, sans-serif;
+  --font-arabic: "Times New Roman", "Amiri", serif;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 8px;
+  --touch-target: 44px;
+  --container-max: 1120px;
+  --page-gutter: 20px;
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --page-gutter: 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --page-gutter: 48px;
+  }
+}
