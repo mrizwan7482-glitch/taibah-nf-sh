@@ -117,7 +117,7 @@ export function StorySection() {
               style={{ opacity: coverOpacity, pointerEvents: "none" }}
             >
               <AnimatedHouseIcon />
-              <p className="cover-text">Slide Scroller to Reveal House Name</p>
+              <p className="cover-text">Our new beginning is named...</p>
             </motion.div>
 
             {/* Revealed House Name Board Image — clips in from left as progress increases */}

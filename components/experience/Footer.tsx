@@ -9,6 +9,7 @@ export function Footer() {
       <Container>
         <div className="footer-content">
           <h2 className="footer-title">{houseConfig.messages.thankYou}</h2>
+          <div className="footer-divider" aria-hidden="true" />
           <p className="footer-text">{houseConfig.messages.thankYouSubtext}</p>
         </div>
       </Container>

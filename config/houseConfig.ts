@@ -24,7 +24,6 @@ export type HouseConfig = {
     countdownDate: string;
   };
   images: {
-    houseFront: string;
     gateWall: string;
     gallery: readonly GalleryImage[];
   };
@@ -46,7 +45,7 @@ export type HouseConfig = {
 
 export const houseConfig = {
   website: {
-    title: "Housewarming Invitation",
+    title: "Housewarming Invitation | Taibah",
     description:
       "A premium digital housewarming invitation created for a warm, elegant arrival experience.",
   },
@@ -61,16 +60,8 @@ export const houseConfig = {
     countdownDate: "2026-08-16T00:00:00",
   },
   images: {
-    houseFront: "/images/actual-house-front.webp",
     gateWall: "/images/actual-gate-wall.webp",
     gallery: [
-      {
-        id: "house-front",
-        label: "Taibah Villa Front Facade",
-        src: "/images/actual-house-front.webp",
-        alt: "Straight front view of Taibah Villa Facade",
-        priority: true,
-      },
       {
         id: "house-side",
         label: "Taibah Villa Side View",

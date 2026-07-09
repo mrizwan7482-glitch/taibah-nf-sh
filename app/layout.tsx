@@ -20,6 +20,10 @@ export const metadata: Metadata = {
   title: houseConfig.website.title,
   description: houseConfig.website.description,
   applicationName: houseConfig.website.title,
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
 };
 
 export const viewport: Viewport = {
@@ -40,13 +44,6 @@ export default function RootLayout({
         <link
           rel="preload"
           href={houseConfig.images.gateWall}
-          as="image"
-          type="image/webp"
-          fetchPriority="high"
-        />
-        <link
-          rel="preload"
-          href={houseConfig.images.houseFront}
           as="image"
           type="image/webp"
           fetchPriority="high"

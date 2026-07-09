@@ -3,8 +3,8 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { houseConfig } from "@/config/houseConfig";
 import { Button } from "@/components/ui/Button";
+import gateWallImg from "../../public/images/actual-gate-wall.webp";
 
 type GateSceneProps = {
   onNext: () => void;
@@ -95,10 +95,11 @@ export function GateScene({ onNext }: GateSceneProps) {
         transition={{ duration: 12, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
       >
         <Image
-          src={houseConfig.images.gateWall}
+          src={gateWallImg}
           alt="Taibah House Gate Wall"
           fill
           priority
+          placeholder="blur"
           sizes="100vw"
           className="scene-bg-image"
         />
@@ -118,7 +119,7 @@ export function GateScene({ onNext }: GateSceneProps) {
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as const, delay: 0.5 }}
           className="gate-card"
         >
-          <span className="gate-subtitle">GREETINGS</span>
+          <span className="gate-subtitle">GREETINGS<span className="emoji-sparkle">✨</span></span>
           <h1 className="gate-title">An Invitation Awaits</h1>
           <p className="gate-text">
             Step through our doors and join us in celebrating a new chapter.

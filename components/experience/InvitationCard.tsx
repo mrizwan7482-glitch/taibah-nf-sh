@@ -72,11 +72,6 @@ export function InvitationCard() {
 
           {/* Event Details Card Section */}
           <motion.div variants={itemVariants} className="card-event-details">
-            {/* Event Header Subtitle */}
-            <div className="animated-house-container">
-              <span className="house-icon-subtitle">WELCOME HOME</span>
-            </div>
-
             <div className="details-grid">
               <div className="detail-item">
                 <span className="detail-label">Hosts</span>
