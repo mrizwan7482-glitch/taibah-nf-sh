@@ -210,8 +210,10 @@ export function StorySection() {
               <p className="meaning-line-sub">
                 A home we pray is filled with barakah.
               </p>
-              <p className="meaning-welcome">Welcome to</p>
-              <h3 className="meaning-name-title">Taybah</h3>
+              <div className="meaning-title-group">
+                <p className="meaning-welcome">Welcome to</p>
+                <h3 className="meaning-name-title">Taybah</h3>
+              </div>
             </div>
           </motion.div>
         </motion.div>
