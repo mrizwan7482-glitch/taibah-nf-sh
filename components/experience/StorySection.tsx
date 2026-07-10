@@ -1,55 +1,14 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion, useMotionValue, useTransform, animate } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { AnimatedHouseIcon } from "./AnimatedHouseIcon";
 
 export function StorySection() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const trackWidthRef = useRef(300);
-  const thumbWidth = 52;
+  const [isOpen, setIsOpen] = useState(false);
   const prefersReducedMotion = useReducedMotion();
-
-  // Declarative MotionValues — no React state during drag
-  const x = useMotionValue(0);
-
-  // maxDrag as MotionValue so transforms stay in sync with resize
-  const maxDragRef = useRef(trackWidthRef.current - thumbWidth - 8);
-
-  useEffect(() => {
-    const measure = () => {
-      if (trackRef.current) {
-        trackWidthRef.current = trackRef.current.clientWidth;
-        maxDragRef.current = trackWidthRef.current - thumbWidth - 8;
-      }
-    };
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, []);
-
-  // Progress 0→1 based on x, dynamically clamped to maxDrag at drag-time
-  const dragProgress = useTransform(x, () => {
-    const max = maxDragRef.current;
-    return Math.min(1, Math.max(0, x.get() / max));
-  });
-
-  const handleDragEnd = () => {
-    // Re-read from DOM in case of resize
-    const max = trackRef.current
-      ? trackRef.current.clientWidth - thumbWidth - 8
-      : maxDragRef.current;
-    maxDragRef.current = max;
-
-    const currentX = x.get();
-    if (currentX > max * 0.72) {
-      animate(x, max, { type: "spring", stiffness: 350, damping: 35 });
-    } else {
-      animate(x, 0, { type: "spring", stiffness: 350, damping: 35 });
-    }
-  };
 
   const containerVariants = {
     hidden: {},
@@ -69,15 +28,6 @@ export function StorySection() {
     },
   };
 
-  // All transforms are purely derived from dragProgress — no React re-renders during swipe
-  const fillWidth = useTransform(dragProgress, (p) => `calc(${p * 100}% + ${thumbWidth / 2}px)`);
-  const textOpacity = useTransform(dragProgress, [0, 0.55], [1, 0]);
-  const coverOpacity = useTransform(dragProgress, [0, 0.7], [1, 0]);
-  const clipPathValue = useTransform(
-    dragProgress,
-    (p) => `inset(0 ${((1 - p) * 100).toFixed(2)}% 0 0)`
-  );
-
   return (
     <section className="story-section-outer">
       <Container>
@@ -88,43 +38,56 @@ export function StorySection() {
           variants={containerVariants}
           className="story-content"
         >
-          {/* Paragraph 1 */}
-          <motion.p variants={lineVariants} className="story-line">
-            A home is more than bricks and walls. It is where prayers are offered,
-            dreams are nurtured, and memories are created. By the grace of Almighty Allah,
-            our dream has become reality.
-          </motion.p>
-
-          {/* Paragraph 2 - Highlight */}
-          <motion.p variants={lineVariants} className="story-line-highlight">
-            Your presence and duas will make this occasion even more special.
-          </motion.p>
+          {/* Qur'an Dua and Translation */}
+          <motion.div variants={lineVariants} className="dua-container">
+            <h2 className="dua-arabic">رَبِّ أَنْزِلْنِي مُنْزَلًا مُبَارَكًا وَأَنْتَ خَيْرُ الْمُنْزِلِينَ</h2>
+            <p className="dua-translation">
+              &ldquo;My Lord, let me land at a blessed place, for You are the Best to accommodate us.&rdquo;
+            </p>
+            <span className="dua-reference">(Qur&apos;an 23:29)</span>
+          </motion.div>
 
           {/* Divider */}
           <motion.div
             variants={lineVariants}
             className="card-gold-divider"
-            style={{ width: "80%", marginBlock: "20px 8px" }}
+            style={{ width: "80%", marginBlock: "8px 8px" }}
           >
             <div className="divider-diamond" />
           </motion.div>
 
-          {/* House Name Revealer Plaque Box Viewport */}
-          <motion.div variants={lineVariants} className="revealer-viewport">
-            {/* Cover — fades out as image is revealed, fades back when closed */}
-            <motion.div
-              className="revealer-cover"
-              style={{ opacity: coverOpacity, pointerEvents: "none" }}
-            >
-              <AnimatedHouseIcon />
-              <p className="cover-text">Our new beginning is named...</p>
-            </motion.div>
+          {/* Subheading: We named our Home... */}
+          <motion.h3
+            variants={lineVariants}
+            className="revealer-subheading"
+          >
+            We named our Home...
+          </motion.h3>
 
-            {/* Revealed House Name Board Image — clips in from left as progress increases */}
-            <motion.div
-              className="revealer-image-wrapper"
-              style={{ clipPath: clipPathValue }}
-            >
+          {/* House Name Revealer Plaque Box Viewport */}
+          <motion.div
+            variants={lineVariants}
+            className="revealer-viewport"
+            onClick={() => setIsOpen(!isOpen)}
+            style={{ 
+              perspective: "1200px", 
+              transformStyle: "preserve-3d" 
+            }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            role="button"
+            aria-expanded={isOpen}
+            aria-label="Reveal house name board"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setIsOpen(!isOpen);
+              }
+            }}
+          >
+            {/* Background Revealed Image */}
+            <div className="revealer-image-wrapper" style={{ transform: "translate3d(0, 0, 0px)" }}>
               <Image
                 src="/images/actual-house-name-board.webp"
                 alt="Taibah House Name Board"
@@ -133,45 +96,122 @@ export function StorySection() {
                 sizes="(max-width: 768px) 100vw, 600px"
                 className="revealer-image"
               />
+              <div className="revealer-image-overlay" />
+            </div>
+
+            {/* Left Door Panel */}
+            <motion.div
+              className="revealer-door door-left"
+              animate={{
+                rotateY: prefersReducedMotion ? 0 : (isOpen ? -115 : 0),
+                x: prefersReducedMotion ? (isOpen ? "-100%" : "0%") : "0%",
+                opacity: prefersReducedMotion && isOpen ? 0 : 1,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 85,
+                damping: 15,
+                mass: 0.9,
+              }}
+              style={{
+                originX: 0,
+                transformStyle: "preserve-3d",
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                transform: "translate3d(0, 0, 5px)",
+              }}
+            >
+              <div className="door-panel-border" />
+            </motion.div>
+
+            {/* Right Door Panel */}
+            <motion.div
+              className="revealer-door door-right"
+              animate={{
+                rotateY: prefersReducedMotion ? 0 : (isOpen ? 115 : 0),
+                x: prefersReducedMotion ? (isOpen ? "100%" : "0%") : "0%",
+                opacity: prefersReducedMotion && isOpen ? 0 : 1,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 85,
+                damping: 15,
+                mass: 0.9,
+              }}
+              style={{
+                originX: 1,
+                transformStyle: "preserve-3d",
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                transform: "translate3d(0, 0, 5px)",
+              }}
+            >
+              <div className="door-panel-border" />
+            </motion.div>
+
+            {/* Center Content Overlay (fades out as doors open) */}
+            <motion.div
+              className="revealer-content-overlay"
+              animate={{
+                opacity: isOpen ? 0 : 1,
+                scale: isOpen ? 0.9 : 1,
+              }}
+              style={{
+                pointerEvents: isOpen ? "none" : "auto",
+                transformStyle: "preserve-3d",
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                transform: "translate3d(0, 0, 10px)",
+              }}
+              transition={{ duration: 0.35, ease: "easeInOut" }}
+            >
+              <div className="revealer-crest-wrapper" style={{ marginBottom: "16px" }}>
+                <AnimatedHouseIcon />
+              </div>
+
+              {/* Shimmering Tap Badge */}
+              <motion.div
+                className="tap-to-open-badge"
+                animate={{ y: [0, -4, 0] }}
+                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+              >
+                <span className="pulse-dot" />
+                <span>Tap to Open</span>
+              </motion.div>
             </motion.div>
           </motion.div>
 
-          {/* Draggable Slider track */}
-          <motion.div variants={lineVariants} className="revealer-slider-wrapper">
-            <div ref={trackRef} className="revealer-track">
-              <motion.div
-                className="revealer-track-fill"
-                style={{ width: fillWidth }}
-              />
-
-              <motion.span
-                className="revealer-track-text"
-                style={{ opacity: textOpacity }}
-              >
-                Swipe Right to Unveil →
-              </motion.span>
-
-              <motion.div
-                drag="x"
-                dragElastic={0.04}
-                dragMomentum={false}
-                dragConstraints={trackRef}
-                style={{ x }}
-                onDragEnd={handleDragEnd}
-                className="revealer-thumb"
-                whileHover={{ scale: 1.05 }}
-                whileDrag={{ scale: 0.97, cursor: "grabbing" }}
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  className="revealer-thumb-icon"
-                >
-                  <path d="M9 18l6-6-6-6" />
-                </svg>
-              </motion.div>
+          {/* Meaning of the name Taybah - revealed below the box when open */}
+          <motion.div
+            initial={{ opacity: 0, height: 0, marginTop: 0, paddingBottom: 0 }}
+            animate={isOpen ? {
+              opacity: 1,
+              height: "auto",
+              marginTop: 24,
+              paddingBottom: 24,
+            } : {
+              opacity: 0,
+              height: 0,
+              marginTop: 0,
+              paddingBottom: 0,
+            }}
+            transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+            style={{ 
+              overflow: "hidden", 
+              width: "calc(100% + 24px)",
+              paddingInline: "12px",
+              marginInline: "-12px",
+            }}
+          >
+            <div className="name-meaning-container">
+              <p className="meaning-line-sub">
+                A name inspired by the city beloved to the Prophet <span className="arabic-glyphet">ﷺ</span>...
+              </p>
+              <p className="meaning-line-sub">
+                A home we pray is filled with barakah.
+              </p>
+              <p className="meaning-welcome">Welcome to</p>
+              <h3 className="meaning-name-title">Taybah</h3>
             </div>
           </motion.div>
         </motion.div>

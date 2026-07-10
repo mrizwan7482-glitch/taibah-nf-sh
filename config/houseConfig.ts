@@ -52,7 +52,7 @@ export const houseConfig = {
   event: {
     houseName: "A New Beginning",
     owners: ["Shuhaib KC", "Nafeesath P"],
-    children: ["Zuhara Shezmin", "Maryam Mehrish", "Muhammed Habib Ali"],
+    children: ["Zuhra Shazmin", "Maryam Mehrish", "Muhammed Habib Ali"],
     date: "Sunday, August 16, 2026",
     venue: "Padne, Kasaragod",
     address: "Padne, Kasaragod",
