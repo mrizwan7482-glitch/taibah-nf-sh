@@ -1176,8 +1176,8 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px; /* tight gap between Welcome to and Taybah */
-  margin-top: 6px; /* separates the title group from the paragraphs above */
+  gap: 4px; /* tight gap between Welcome to and TAIBAH */
+  margin-top: 20px; /* beautiful vertical gap separating the title group from the description lines */
   z-index: 2;
 }
 
@@ -1190,12 +1190,30 @@ a {
   color: var(--color-gold-soft);
 }
 
+.meaning-title-divider {
+  width: 90px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.45) 50%, transparent);
+  margin-block: 10px 8px;
+}
+
+.meaning-subtitle {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-gold-soft);
+  z-index: 2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
 .meaning-name-title {
   margin: 0;
   font-family: var(--font-heading);
   font-size: 2.5rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.1em; /* spacious, high-end look for all-caps lettering */
   background: linear-gradient(to bottom, #ffd984 0%, #c2952b 52%, #8c6411 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

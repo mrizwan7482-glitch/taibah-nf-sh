@@ -212,7 +212,9 @@ export function StorySection() {
               </p>
               <div className="meaning-title-group">
                 <p className="meaning-welcome">Welcome to</p>
-                <h3 className="meaning-name-title">Taybah</h3>
+                <h3 className="meaning-name-title">TAIBAH</h3>
+                <div className="meaning-title-divider" />
+                <p className="meaning-subtitle">Home of Blessings</p>
               </div>
             </div>
           </motion.div>
